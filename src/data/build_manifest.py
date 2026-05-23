@@ -16,6 +16,7 @@ from src.data.yolo_pose import (
     parse_yolo_pose_line,
 )
 from src.utils.config import load_config, project_root
+from src.utils.paths import resolve_dataset_root
 
 
 def _load_severe_stems(path: Path) -> set[str]:
@@ -94,12 +95,8 @@ def _collect_splits(dataset_root: Path, cfg: dict) -> list[tuple[str, str, Path]
 
 def build_manifest(cfg: dict, root: Path | None = None) -> Path:
     root = root or project_root()
-    dataset_root = root / cfg["dataset_root"]
-    if not dataset_root.is_dir():
-        raise FileNotFoundError(
-            f"Dataset not found at {dataset_root}. "
-            "Download perio-KPT from https://zenodo.org/records/17272200"
-        )
+    dataset_root = resolve_dataset_root(root, cfg["dataset_root"])
+    print(f"Using dataset root: {dataset_root}")
 
     patches_dir = root / cfg["patches_dir"]
     patches_dir.mkdir(parents=True, exist_ok=True)
@@ -203,9 +200,16 @@ def main() -> None:
         default="configs/baseline_ldm.yaml",
         help="Path to config YAML",
     )
+    parser.add_argument(
+        "--dataset-root",
+        default=None,
+        help="Override perio-KPT folder (or set env PERIO_KPT_ROOT)",
+    )
     args = parser.parse_args()
     root = project_root()
     cfg = load_config(root / args.config)
+    if args.dataset_root:
+        cfg["dataset_root"] = args.dataset_root
     build_manifest(cfg, root)
 
 
