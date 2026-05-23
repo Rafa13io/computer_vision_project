@@ -1,0 +1,43 @@
+# Baseline LDM — paths (override via env or CLI)
+dataset_root: data/perio-KPT
+experiment_subdir: 1_Experiment/standard_box
+fold_name: fold0
+holdout_subdir: 1_Experiment/holdout_test_standard_box
+
+# Preprocessing
+patch_size: 256
+bbox_margin: 0.10
+tooth_box_classes: [0, 1, 2]  # single, double, triple root
+# Rare = teeth from radiographs in severe_images list OR pbl_ratio >= threshold
+severe_images_file: configs/severe_images.txt  # optional; one image stem per line
+pbl_ratio_threshold: 0.15  # fallback heuristic from keypoints (use 0.30 with real data)
+
+# VAE
+vae_latent_channels: 4
+vae_base_channels: 64
+vae_lr: 1.0e-4
+vae_batch_size: 16
+vae_epochs: 40
+# For smoke tests, override via env or edit: vae_epochs: 2, diffusion_epochs: 3
+vae_kl_weight: 1.0e-4
+
+# Diffusion (latent)
+diffusion_steps: 1000
+diffusion_lr: 1.0e-4
+diffusion_batch_size: 8
+diffusion_epochs: 100
+unet_base_channels: 64
+unet_channel_mult: [1, 2, 4, 4]
+
+# Sampling
+ddim_steps: 50
+num_samples: 64
+sample_seed: 42
+
+# Training
+seed: 42
+num_workers: 2
+amp: true
+output_dir: outputs
+manifest_path: data/processed/manifest.csv
+patches_dir: data/processed/patches

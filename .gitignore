@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 lectures/
+data/
+outputs/
+wandb/
+*.pt
+*.pth
 # Distribution / packaging
 .Python
 build/

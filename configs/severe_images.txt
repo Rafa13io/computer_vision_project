@@ -1,0 +1,4 @@
+# Optional: one image filename stem per line (without extension), e.g. Image01
+# Radiographs with severe bone loss (paper: 12 of 192).
+# Fill after inspecting dataset metadata or clinician labels.
+# If empty, rare patches are selected via pbl_ratio_threshold in baseline_ldm.yaml
