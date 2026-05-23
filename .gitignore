@@ -6,8 +6,8 @@ __pycache__/
 # C extensions
 *.so
 lectures/
-data/
-outputs/
+/data/
+/outputs/
 wandb/
 *.pt
 *.pth
